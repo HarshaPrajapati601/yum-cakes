@@ -9,19 +9,20 @@ const authController = {
             //Whenever we save the user on the database and we do all the logic, we get a user back.
             const user = await authService.createUser(email, password, firstName, lastName );
             // jwt token
-            const token = await authService.genAuthToken(user);
-             // send verification email
-             // cookie
-            res.cookie('x-access-cookie-token', token)
-            .status(httpStatus.CREATED).send({
-               user,
-               token
-            })
 
-
-
+            if (user) {
+               const token = await authService.genAuthToken(user);
+               // send verification email
+               // cookie
+              res.cookie('x-access-cookie-token', token)
+              .status(httpStatus.CREATED).send({
+                 user,
+                 token
+              })
+            }
          } catch(error) {
-            res.status(httpStatus.BAD_REQUEST).send(error.message)
+            //  res.status(httpStatus.BAD_REQUEST).send(error)
+            next(error);
          }
     },
     async signIn(req, res, next) {
@@ -38,7 +39,7 @@ const authController = {
 
          //send res back    
       } catch(error) {
-         res.status(httpStatus.BAD_REQUEST).send(error.message)
+         next(error)
       }
 
 

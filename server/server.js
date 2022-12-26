@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const routes = require('./routes');
+const { handleError, convertToApiError } = require('./middleware/apiError')
 
 // location of mongoDB
 const mongoUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}?retryWrites=true&w=majority`;
@@ -27,6 +28,15 @@ app.use(mongoSanitize());
 // routes middleware
 
 app.use('/api', routes)
+
+// error handling
+
+app.use(convertToApiError);
+app.use((err,req,res,next)=>{
+    handleError(err,res)
+})
+
+
 
 
 
