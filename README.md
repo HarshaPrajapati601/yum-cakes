@@ -50,4 +50,17 @@ Because we are not putting it on git hub( remember in gitignore we added the .en
 (So, we don't have to do this work twice -- we set up once for both local dev and production)
 
 
-### Creating models and routes
+### Creating models (Articles and users) and routes
+- Add models -
+- Creating User schema with mongoose
+- `npm i validator` - to add validatoions 
+  <img width="611" alt="image" src="https://user-images.githubusercontent.com/56376002/209461803-1857fade-2629-493f-8091-ca9eb4bbc267.png">
+  
+  <img width="611" alt="image" src="https://user-images.githubusercontent.com/56376002/209500534-30a2b9f5-2bb9-4e51-987c-2acc90212dbd.png">
+
+  <img width="611" alt="image" src="https://user-images.githubusercontent.com/56376002/209461803-1857fade-2629-493f-8091-ca9eb4bbc267.png">
+  
+  - Adding user, password, roles(admin, user)
+  - So the only thing we have right now is the models. 
+  - Right now, what we need to do is create the routes so we can, store data using the models.
+
