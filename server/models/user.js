@@ -1,22 +1,26 @@
 const mongoose = require('mongoose');
-require('dotnet').config();
 const validator = require('validator');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+
+const SALT_IT = 10;
+
 const userSchema = mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required:true,
         unique: true,
         trim: true,
         lowercase: true,
-        validate(value) {
-            if (!validator.email(value)) {
-                throw new Error('Invalid email');
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error('Invalid email')
             }
         }
     },
     password: {
         type: String,
-        required: true,
+        required:true,
         trim: true
     },
     roles: {
@@ -26,13 +30,13 @@ const userSchema = mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true,
+        required:true,
         trim: true,
         maxLength: 200
     },
     lastName: {
         type: String,
-        required: true,
+        required:true,
         trim: true,
         maxLength: 100
     },
@@ -51,6 +55,26 @@ const userSchema = mongoose.Schema({
 }, {
     timestamps: true /// it creates created_at date by default [all server code]
 });
+
+// this method has direct access to the users that are stored in Mongoose db
+
+userSchema.statics.isEmailTaken = async function(email) {
+    //findone is a method that we get on mongoose to double check from the db if that entity exists in db or not
+    const user = await this.findOne({email} );
+    return !!user;
+}
+
+// hash the password with salt
+
+userSchema.pre('save', async function(next) {
+    let user = this;
+    if(user.isModified('password')) {
+        const salt = await bcrypt.genSalt(SALT_IT);
+        const hashPassword = await bcrypt.hash(user.password, salt);
+        user.password = hashPassword;
+    }
+    next();
+    })
 
 
 const User = mongoose.model('User', userSchema );
