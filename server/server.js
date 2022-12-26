@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const routes = require('./routes');
@@ -17,6 +18,7 @@ mongoose.connect(mongoUri);
 
 // PARSING
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // SANITIZE - TO SANITIZE EVERYTHING THAT GOES TO MONGO
 app.use(xss());
@@ -25,6 +27,7 @@ app.use(mongoSanitize());
 // routes middleware
 
 app.use('/api', routes)
+
 
 
 

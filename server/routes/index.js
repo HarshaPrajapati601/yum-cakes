@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const authRoue = require('./auth.route');
+const authRoute = require('./auth.route');
 
 // if the path is /api/auth we will call the authROUTE
 
 const routesIndex = [
-    {path: '/auth', route: authRoue}
+    {path: '/auth', route: authRoute},
 ];
 
 routesIndex.forEach((routes) => {

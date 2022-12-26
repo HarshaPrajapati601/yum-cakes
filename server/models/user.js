@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
@@ -74,8 +75,24 @@ userSchema.pre('save', async function(next) {
         user.password = hashPassword;
     }
     next();
-    })
+    });
+    
+ userSchema.methods.generateAuthToken = function() {
+    let user = this;
+    const userObjectDb = {syb: user._id.toHexString(), email: user.email} // obj used to token fy; 
+    const token = jwt.sign(userObjectDb, process.env.DB_SECRET_PASSWORD, { expiresIn: '1d'});
+    return token;
+ }
 
+ // compare password
+ userSchema.methods.comparePassword = async function(CandidatePassword) {
+    //CandidatePassword = un hashed version of password
+    //user.password = db hashed password
+    const user = this;
+    const match = await bcrypt.compare(CandidatePassword, user.password ); //boolean
+    return match;
+
+ }
 
 const User = mongoose.model('User', userSchema );
 module.exports = { User };
