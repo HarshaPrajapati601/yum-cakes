@@ -183,6 +183,30 @@ In authservice.js
  - create token
  - store the cookie and allow the user to sign in
 
+## API ERROR HANDLING AND token checking
+
+- right now we get errors like bad token or something which is just a string, but right now we want it to be like an object with error message , status code.
+- to keep it consistent throught app,,when we send it to front end.
+- So, how to do this?
+
+### we need a Middleware to intercept these errors and turn them into something -usage of error class
+ - Creating middlewares - ApiError.js
+ - So what we want to do at the end of the day, we want to create a middleware and we want to tell the
+   server, our main server in server file, that instead of using this inbuilt error handling from express, every time that we get an error,
+   we want to use this (handleError)
+  
+  <img width="811" alt="image" src="https://user-images.githubusercontent.com/56376002/209544884-dd75b76d-2690-4e82-85a4-5146247cdc1d.png">
+
+- now in server.js  - add the middleware
+- `app.use((err,req,res,next)=>{
+    handleError(err,res)
+})`
+-So now instead of the new Error everywhere we will use the APiError class (i.e our class extending the error class)
+
+<img width="811" alt="image" src="https://user-images.githubusercontent.com/56376002/209546524-af5307c8-850c-4146-a14e-025237939a96.png">
+
+
+
 
 
 
