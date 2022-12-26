@@ -120,6 +120,76 @@ Because we are not putting it on git hub( remember in gitignore we added the .en
 
 `We create an endpoint (/auth/regsiter) and then we run the controller and the controller is going to provide a response.`
 
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209515060-ba20ae90-b429-409f-a759-cd106c305b75.png">
+
+So now , we go to the authService and add the createUser method where- we will do these steps below - 
+
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209515132-fb49d323-5433-44d9-8eca-c1b34fd3e623.png">
+
+
+###  1. check if email does not exist
+- for this we will go to the schema add a static method which will have access to the users from mongoose db. and return from it if the user exists or not
+ 
+ <img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209515258-46c94ad8-2924-4975-8c9b-a3651d06045e.png">
+ 
+ 
+ <img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209523884-7555825a-b3d6-4366-b55f-e626d4b942a2.png">
+
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209523922-f840e536-3351-46b4-9bc9-68eb610ced29.png">
+
+ - hashing the password with the salt
+ 
+ <img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209523960-d8a26f4d-e939-468a-a6b5-27d79c11b260.png">
+
+### 2. Genrating jwt token
+- Now we need to send a jwt token ones the user logs in or register
+- Verify the token
+- send verification email
+-  store the jwt as cookie 
+
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209525662-6abcea5a-e7f6-4644-8a96-9e59e0bf27d3.png">
+
+In authservice.js 
+
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209525701-b09c9b1d-66c5-47e6-b239-48c9d0e5807c.png">
+
+`Npm add jsonwebtoken`
+- Now you need your super secret password
+- Add it in .env file 
+- NOW generating a token based on some user details and the super secret password
+
+<img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209526635-09cc496a-8c95-4e01-a55c-5f05c56ff63d.png">
+
+<!-- ### 3. Function to generating the email for verification  -->
+
+- also use a cookie parser - app.use(cookieParser());
+
+## Sign in user
+ - Add a post /signin route and in the authController add the signIn method 
+ - <img width="1093" alt="image" src="https://user-images.githubusercontent.com/56376002/209542750-8dd290c9-58ea-4b3a-b8ff-2e8e143a0c1e.png">
+ 
+ - in Authservice create a method to check the user exisits with correct details 
+ - Now for all user related methods which does not include auth details ,, create a userService and add a method to find by email
+
+    <img width="528" alt="image" src="https://user-images.githubusercontent.com/56376002/209542867-68a30451-4db1-49eb-88e8-c3898d9e9e8a.png">
+
+- Now in your auth service create a method to check both email and passwords - it returns the user
+- <img width="528" alt="image" src="https://user-images.githubusercontent.com/56376002/209542936-b83505b8-6300-4662-8aae-2eac2a121725.png">
+
+- create a method on the user schema to comparePassword  - pass the real unhashed password - it returns a true or false
+
+    <img width="916" alt="image" src="https://user-images.githubusercontent.com/56376002/209543024-b26b86ae-878e-4653-87ca-79b523c00771.png">
+    
+ - create token
+ - store the cookie and allow the user to sign in
+
+
+
+
+
+
+
+
 
 
 
